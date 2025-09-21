@@ -2,7 +2,7 @@
 ########################## CONTROLLER / ROUTER -- rest api (swagger, auth) and messages delegation
 ### communicates ONLY with BL
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 import five_bl
 
 app = FastAPI()
@@ -47,10 +47,12 @@ def get_all_messages():
 @app.get("/messages/{id}")
 def get_message_by_id(id: int):
     try:
-        result = five_bl.delete_message(id)
+        result = five_bl.get_message_by_id(id)
+        if not result:
+            raise HTTPException(status_code=404, detail=f"Message id={id} not found")
         return result
     except:
-        return {'status': f'message with id {id} not found!'}
+        raise HTTPException(status_code=404, detail=f"Message id={id} not found")
 
 
 

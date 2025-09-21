@@ -35,6 +35,12 @@ def get_all_messages():
         result.append(dict(row))
     return result
 
+def get_message_by_id(id):
+    result = dal.get_message_by_id(id)
+    if result:
+        return dict(result)
+    return result
+
 # **BONUS: can add
 # @db_try_except
 # def get_message_by_id(id: int):
